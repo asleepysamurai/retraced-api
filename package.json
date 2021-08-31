@@ -25,7 +25,7 @@
     "start:inspect-brk": "yarn prep && yarn env:types:dev && yarn build:watch:run-brk",
     "start:prod": "yarn prep && yarn env:types:prod && yarn build:prod",
     "knex": "knex --knexfile ./knexfile.ts",
-    "test": "TZ='UTC' jest",
+    "test": "tsc && cd dist && TZ='UTC' jest",
     "test:inspect-brk": "TZ='UTC' node --inspect-brk `which jest` --runInBand",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },

@@ -2,54 +2,26 @@
  * Application Entry Point
  */
 
-import { fastify, FastifyInstance } from 'fastify';
-
-import { env } from 'utils/environment';
-import * as routes from 'routes';
-import { resolve } from 'path';
-
-import { createConnection } from 'typeorm';
-import { Category } from 'entities/Category.entity';
-
-const initDB = async () => {
-  await createConnection({
-    type: 'sqlite',
-    database: resolve(__dirname, '../../', env.get('DB_PATH')),
-    entities: [Category],
-    synchronize: true,
-  });
-};
-
-const initRoutes = async (app: FastifyInstance) => {
-  return Object.values(routes).map((init) => {
-    app.register(
-      async (app, _, done) => {
-        await init(app);
-        done();
-      },
-      { prefix: '/v1' },
-    );
-  });
-};
+import { initApp } from 'src/app';
+import { env } from 'src/utils/environment';
 
 const init = async () => {
-  const app = fastify({
-    ignoreTrailingSlash: true,
-    logger: true,
-    trustProxy: true,
-  });
-
   try {
-    await initDB();
-    await initRoutes(app);
+    const app = await initApp();
 
-    await app.listen(env.getAsInt('APP_SERVER_PORT'), env.get('APP_SERVER_HOST'));
+    try {
+      await app.listen(env.getAsInt('APP_SERVER_PORT'), env.get('APP_SERVER_HOST'));
+    } catch (err) {
+      // Error during port binding, log and throw to be handled by outer try
+      app.log.error(err);
+      throw err;
+    }
   } catch (err) {
-    app.log.error(err);
+    // Errors should be logged by the time they get here
+    // We do this roundabout thing to be able to use fastify built in logger
+    // If we have our own logging system instead just throw the error and catch once and log and exit
     process.exit(1);
   }
-
-  return app;
 };
 
-init();
+void init();

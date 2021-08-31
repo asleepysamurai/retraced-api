@@ -3,7 +3,7 @@
  */
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { IsNull } from 'typeorm';
-import { Category } from 'entities/Category.entity';
+import { Category } from 'src/entities/Category.entity';
 
 const schema = {
   querystring: {

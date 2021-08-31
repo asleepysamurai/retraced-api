@@ -7,7 +7,7 @@
 
 import dotenv from 'dotenv';
 import * as path from 'path';
-import type { EnvVarKey } from 'codegen/env.types.ts';
+import type { EnvVarKey } from 'src/codegen/env.types.ts';
 
 class Environment {
   constructor() {
