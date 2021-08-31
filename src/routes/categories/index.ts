@@ -55,7 +55,7 @@ const handler = async (
 
     res.send({ data: categories, success: true });
   } catch (err) {
-    app.log.error(`Failed to get categories`, { err });
+    app.log.error({ message: 'Failed to get categories', err });
     res.status(500).send({ success: false });
   }
 };
