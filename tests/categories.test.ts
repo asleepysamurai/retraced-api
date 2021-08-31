@@ -218,4 +218,13 @@ describe('GET /categories endpoint', () => {
 
     expect(JSON.parse(response.body).data[0].name).toEqual('category11');
   });
+
+  test('Should throw 400 if invalid id (non-numeric) provided', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: '/v1/categories?id=abc',
+    });
+
+    expect(response.statusCode).toEqual(400);
+  });
 });
