@@ -53,6 +53,12 @@ const handler = async (
       ? await Category.find({ where: { id: parentCategoryId }, ...findOptions })
       : await Category.find({ where: { parentId: IsNull() }, ...findOptions });
 
+    if (!categories.length && parentCategoryId) {
+      // requested category id is non-existent return 404
+      res.status(404).send({ success: true });
+      return;
+    }
+
     res.send({ data: categories, success: true });
   } catch (err) {
     app.log.error({ message: 'Failed to get categories', err });

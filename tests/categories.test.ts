@@ -154,13 +154,13 @@ describe('GET /categories endpoint', () => {
     expect(JSON.parse(response.body).data.length).toEqual(1);
   });
 
-  test('With non-existing id parameter: should return 0 root category', async () => {
+  test('With non-existing id parameter: should return 404', async () => {
     const response = await app.inject({
       method: 'GET',
       url: '/v1/categories?id=500',
     });
 
-    expect(JSON.parse(response.body).data.length).toEqual(0);
+    expect(response.statusCode).toEqual(404);
   });
 
   test('Maximum page size should be 10', async () => {
