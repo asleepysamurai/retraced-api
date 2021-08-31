@@ -8,3 +8,5 @@
 # For tests
 
 `yarn test`
+
+This project is forked off of my standard ts api server scaffold project, so there might be a few unneeded files I've failed to cleanup.
